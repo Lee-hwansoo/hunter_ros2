@@ -36,8 +36,8 @@ template <typename SystemModel>
 class SystemPropagator {
  public:
   asc::state_t Propagate(asc::state_t init_state,
-                         typename SystemModel::control_t u, double t0,
-                         double tf, double dt) {
+                        typename SystemModel::control_t u, double t0,
+                        double tf, double dt) {
     double t = t0;
     asc::state_t x = init_state;
 
@@ -81,8 +81,7 @@ class HunterMessenger {
   void SetupSubscription() {
     // odometry publisher
     tf_broadcaster_ = std::make_shared<tf2_ros::TransformBroadcaster>(node_);
-    odom_pub_ =
-        node_->create_publisher<nav_msgs::msg::Odometry>(odom_topic_name_, 50);
+    odom_pub_ = node_->create_publisher<nav_msgs::msg::Odometry>(odom_topic_name_, 50);
     status_pub_ = node_->create_publisher<hunter_msgs::msg::HunterStatus>(
         "/hunter_status", 10);
 
@@ -91,8 +90,6 @@ class HunterMessenger {
         "/cmd_vel", 10,
         std::bind(&HunterMessenger::TwistCmdCallback, this,
                   std::placeholders::_1));
-
-    
   }
 
   void PublishStateToROS() {
@@ -161,7 +158,7 @@ class HunterMessenger {
  private:
   std::shared_ptr<HunterType> hunter_;
   rclcpp::Node *node_;
-  
+
 
   std::string odom_frame_;
   std::string base_frame_;
@@ -179,7 +176,7 @@ class HunterMessenger {
   rclcpp::Publisher<hunter_msgs::msg::HunterStatus>::SharedPtr status_pub_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr motion_cmd_sub_;
-  
+
 
   std::shared_ptr<tf2_ros::TransformBroadcaster> tf_broadcaster_;
 
@@ -198,7 +195,7 @@ class HunterMessenger {
   rclcpp::Time current_time_;
 
   void TwistCmdCallback(const geometry_msgs::msg::Twist::SharedPtr msg) {
-    
+
     if (!simulated_robot_) {
       SetHunterMotionCommand(msg);
     } else {
@@ -219,7 +216,7 @@ class HunterMessenger {
     std::cout << "set steering angle: " << phi_i << std::endl;
     hunter_->SetMotionCommand(msg->linear.x, phi_i);
     // hunter_
- 
+
   }
 
   double ConvertCentralAngleToInner(double angle)
@@ -272,11 +269,10 @@ class HunterMessenger {
 
     asc::state_t state =
       model_.Propagate({position_x_, position_y_, theta_},
-                       {linear_speed_, steering_angle_}, 0, dt, dt / 100);
+                      {linear_speed_, steering_angle_}, 0, dt, dt / 100);
     position_x_ = state[0];
     position_y_ = state[1];
     theta_ = state[2];
-
 
     geometry_msgs::msg::Quaternion odom_quat =
         createQuaternionMsgFromYaw(theta_);

@@ -35,10 +35,7 @@ void HunterBaseRos::LoadParameters() {
 
   this->get_parameter_or<std::string>("odom_frame", odom_frame_, "odom");
   this->get_parameter_or<std::string>("base_frame", base_frame_, "base_link");
-  this->get_parameter_or<std::string>("odom_topic_name", odom_topic_name_,
-                                      "odom");
-
-
+  this->get_parameter_or<std::string>("odom_topic_name", odom_topic_name_, "odom");
 
   this->get_parameter_or<bool>("simulated_robot", simulated_robot_, false);
   this->get_parameter_or<int>("control_rate", sim_control_rate_, 50);
@@ -67,7 +64,7 @@ bool HunterBaseRos::Initialize() {
         version = 1;
     } else if (proto == ProtocolVersion::AGX_V2) {
       std::cout << "Detected protocol: AGX_V2" << std::endl;
-         robot_ = std::unique_ptr<HunterRobot>(
+        robot_ = std::unique_ptr<HunterRobot>(
               new HunterRobot(ProtocolVersion::AGX_V2));
         version = 2;
     } else {
@@ -104,9 +101,9 @@ void HunterBaseRos::Run() {
       messenger->SetWeelbase(HunterV2Params::wheelbase);
       messenger->SetMaxSteerAngleCentral(HunterV2Params::max_steer_angle_central);
       messenger->SetMaxSteerAngle(HunterV2Params::max_steer_angle);
-    
+
     }
-    
+
     messenger->SetOdometryFrame(odom_frame_);
     messenger->SetBaseFrame(base_frame_);
     messenger->SetOdometryTopicName(odom_topic_name_);

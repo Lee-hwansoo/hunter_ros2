@@ -50,7 +50,7 @@ set(DEPENDENCIES
 )
 
 
-add_executable(hunter_base_node 
+add_executable(hunter_base_node
     src/hunter_base_ros.cpp
     src/hunter_base_node.cpp
     src/bicycle_model.cpp)
@@ -60,7 +60,7 @@ ament_target_dependencies(hunter_base_node rclcpp tf2 tf2_ros std_msgs nav_msgs 
 install(TARGETS hunter_base_node
   DESTINATION lib/${PROJECT_NAME})
 
-install(DIRECTORY launch
+install(DIRECTORY launch rviz
   DESTINATION share/${PROJECT_NAME}/)
 
 # install(DIRECTORY ascent
